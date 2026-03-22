@@ -3,27 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PNG to SVG Converter</title>
-  <meta name="description" content="Convert PNG icons to clean SVG code instantly in your browser.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>LucidSVG — Clearer Thumbnails</title>
+  <meta name="description" content="Convert your images to ultra-light, crisp SVG thumbnails instantly. Client-side processing, no uploads needed.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-card: #1a1a2e;
-      --bg-card-hover: #22223a;
-      --accent: #7c3aed;
-      --accent-light: #a78bfa;
-      --accent-glow: rgba(124, 58, 237, 0.3);
-      --text-primary: #f0f0f5;
-      --text-secondary: #9ca3af;
-      --text-muted: #6b7280;
-      --border: rgba(255, 255, 255, 0.06);
-      --border-active: rgba(124, 58, 237, 0.5);
+      --bg-primary: #f5f6fa;
+      --bg-white: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f9fafb;
+      --accent: #0d3b54;
+      --accent-teal: #1a7a8a;
+      --accent-light: #2ba0b3;
+      --accent-glow: rgba(26, 122, 138, 0.2);
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a5568;
+      --text-muted: #9ca3af;
+      --border: #e5e7eb;
+      --border-active: rgba(26, 122, 138, 0.5);
       --success: #10b981;
       --danger: #ef4444;
-      --radius: 16px;
-      --radius-sm: 10px;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
     }
 
     * {
@@ -40,95 +44,278 @@
       overflow-x: hidden;
     }
 
-    /* Animated background */
-    .bg-gradient {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(124, 58, 237, 0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 24px 60px;
-    }
-
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .header .badge {
-      display: inline-flex;
+    /* ─── Navbar ─── */
+    .navbar {
+      display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(124, 58, 237, 0.12);
-      border: 1px solid rgba(124, 58, 237, 0.25);
-      border-radius: 999px;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--accent-light);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .header h1 {
-      font-size: clamp(28px, 5vw, 44px);
+    .navbar-brand {
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #f0f0f5 0%, #a78bfa 50%, #7c3aed 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 12px;
+      color: var(--accent-teal);
+      text-decoration: none;
+      letter-spacing: -0.5px;
     }
 
-    .header p {
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .navbar-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .navbar-links a:hover,
+    .navbar-links a.active {
+      color: var(--text-primary);
+    }
+
+    .navbar-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent-teal);
+      border-radius: 1px;
+    }
+
+    .navbar-toggle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .navbar-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 12px rgba(13, 59, 84, 0.3);
+    }
+
+    /* ─── Container ─── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      text-align: center;
+      padding: 72px 24px 48px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .hero p {
       font-size: 16px;
       color: var(--text-secondary);
-      max-width: 500px;
+      max-width: 440px;
       margin: 0 auto;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* Settings panel */
+    /* ─── Drop Zone ─── */
+    .drop-zone-wrapper {
+      padding: 0 24px 40px;
+    }
+
+    .drop-zone {
+      background: var(--bg-white);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 64px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      max-width: 720px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: var(--accent-teal);
+      background: #f0fafb;
+      box-shadow: var(--shadow-md);
+    }
+
+    .drop-zone .icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      background: #e8f4f8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .drop-zone .icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: var(--accent-teal);
+    }
+
+    .drop-zone h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .drop-zone p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .drop-zone .browse-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 32px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .drop-zone .browse-btn:hover {
+      background: #0a2f44;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(13, 59, 84, 0.25);
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    /* ─── Advanced Settings Toggle ─── */
+    .settings-toggle-wrapper {
+      max-width: 720px;
+      margin: 0 auto 20px;
+      padding: 0 24px;
+    }
+
+    .settings-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .settings-toggle-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-teal);
+      background: #f0fafb;
+    }
+
+    .settings-toggle-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s;
+    }
+
+    .settings-toggle-btn.open svg {
+      transform: rotate(90deg);
+    }
+
+    .settings-toggle-btn .chevron {
+      margin-left: auto;
+      transition: transform 0.3s;
+    }
+
+    .settings-toggle-btn.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* ─── Settings Panel (collapsible) ─── */
+    .settings-collapse {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      padding: 0 24px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+    }
+
+    .settings-collapse.open {
+      max-height: 500px;
+      opacity: 1;
+    }
+
     .settings-panel {
-      background: var(--bg-card);
+      background: var(--bg-white);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px 28px;
-      margin-bottom: 28px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
+      box-shadow: var(--shadow-sm);
     }
 
     .setting-group label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.8px;
       margin-bottom: 8px;
     }
 
     .setting-group select,
-    .setting-group input[type="number"],
-    .setting-group input[type="range"] {
+    .setting-group input[type="number"] {
       width: 100%;
       padding: 10px 14px;
-      background: var(--bg-secondary);
+      background: var(--bg-primary);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text-primary);
@@ -138,13 +325,18 @@
       transition: border-color 0.2s;
     }
 
+    .setting-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-teal);
+    }
+
     .setting-group select:focus,
     .setting-group input:focus {
       border-color: var(--border-active);
     }
 
     .setting-group select option {
-      background: var(--bg-secondary);
+      background: var(--bg-white);
     }
 
     .range-value {
@@ -155,101 +347,79 @@
     }
 
     .range-value span {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
     .range-value .val {
-      color: var(--accent-light);
+      color: var(--accent-teal);
       font-weight: 600;
     }
 
-    /* Drop zone */
-    .drop-zone {
-      background: var(--bg-card);
-      border: 2px dashed rgba(124, 58, 237, 0.25);
+    /* ─── Features (3 Steps) ─── */
+    .features {
+      padding: 40px 24px 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 700px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+    }
+
+    .feature-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 60px 40px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 32px 28px;
       position: relative;
-      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .drop-zone::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s;
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
     }
 
-    .drop-zone:hover,
-    .drop-zone.drag-over {
-      border-color: var(--accent);
-      background: var(--bg-card-hover);
+    .feature-card .step-number {
+      font-size: 56px;
+      font-weight: 800;
+      color: #e8f4f8;
+      line-height: 1;
+      margin-bottom: 16px;
+      letter-spacing: -2px;
     }
 
-    .drop-zone:hover::before,
-    .drop-zone.drag-over::before {
-      opacity: 1;
+    .feature-card .step-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 16px;
+      color: var(--accent-teal);
     }
 
-    .drop-zone .icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 20px;
-      background: rgba(124, 58, 237, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .drop-zone .icon svg {
-      width: 28px;
-      height: 28px;
-      stroke: var(--accent-light);
-    }
-
-    .drop-zone h3 {
+    .feature-card h3 {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 8px;
+      color: var(--text-primary);
     }
 
-    .drop-zone p {
-      font-size: 14px;
-      color: var(--text-muted);
+    .feature-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
-    .drop-zone .browse-btn {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 10px 28px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .drop-zone .browse-btn:hover {
-      background: #6d28d9;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px var(--accent-glow);
-    }
-
-    #fileInput {
-      display: none;
-    }
-
-    /* Processing state */
+    /* ─── Processing ─── */
     .processing {
       text-align: center;
       padding: 60px 20px;
@@ -264,7 +434,7 @@
       width: 48px;
       height: 48px;
       border: 3px solid var(--border);
-      border-top-color: var(--accent);
+      border-top-color: var(--accent-teal);
       border-radius: 50%;
       margin: 0 auto 20px;
       animation: spin 0.8s linear infinite;
@@ -279,14 +449,21 @@
       color: var(--text-secondary);
     }
 
-    /* Results */
+    /* ─── Results ─── */
     .results {
       display: none;
       margin-top: 32px;
+      padding-bottom: 60px;
     }
 
     .results.active {
       display: block;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .results-header {
@@ -300,7 +477,7 @@
 
     .results-header h2 {
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .results-actions {
@@ -329,32 +506,32 @@
     }
 
     .btn-primary:hover {
-      background: #6d28d9;
+      background: #0a2f44;
       transform: translateY(-1px);
-      box-shadow: 0 4px 20px var(--accent-glow);
+      box-shadow: 0 4px 20px rgba(13, 59, 84, 0.2);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--bg-primary);
       color: var(--text-primary);
       border: 1px solid var(--border);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: #e5e7eb;
     }
 
     .btn-danger {
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(239, 68, 68, 0.08);
       color: var(--danger);
       border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
     }
 
-    /* Preview panels */
+    /* Preview */
     .preview-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -369,10 +546,11 @@
     }
 
     .preview-card {
-      background: var(--bg-card);
+      background: var(--bg-white);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
     }
 
     .preview-card .card-header {
@@ -394,10 +572,10 @@
     .preview-card .card-header .size-badge {
       font-size: 11px;
       padding: 4px 10px;
-      background: rgba(124, 58, 237, 0.1);
-      color: var(--accent-light);
+      background: #e8f4f8;
+      color: var(--accent-teal);
       border-radius: 999px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .preview-body {
@@ -406,7 +584,7 @@
       align-items: center;
       justify-content: center;
       min-height: 220px;
-      background: repeating-conic-gradient(rgba(255,255,255,0.03) 0% 25%, transparent 0% 50%) 0 0 / 20px 20px;
+      background: repeating-conic-gradient(#f3f4f6 0% 25%, transparent 0% 50%) 0 0 / 20px 20px;
     }
 
     .preview-body img,
@@ -416,7 +594,6 @@
       object-fit: contain;
     }
 
-    /* SVG output for the preview - invert for dark bg if needed */
     #svgPreview {
       display: flex;
       align-items: center;
@@ -449,152 +626,23 @@
       cursor: pointer;
       border: 2px solid transparent;
       transition: border-color 0.2s;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
     }
 
     .color-controls .bg-option:hover,
     .color-controls .bg-option.active {
-      border-color: var(--accent);
+      border-color: var(--accent-teal);
     }
 
     /* Code panel */
     .code-panel {
-      background: var(--bg-card);
+      background: var(--bg-white);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
     }
 
-    .code-panel .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .code-panel .card-header h3 {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-secondary);
-    }
-
-    .code-panel .card-header .copy-btn {
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-
-    .code-panel .card-header .copy-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-primary);
-    }
-
-    .code-panel .card-header .copy-btn.copied {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.3);
-      color: var(--success);
-    }
-
-    .code-output {
-      padding: 20px;
-      max-height: 400px;
-      overflow: auto;
-    }
-
-    .code-output pre {
-      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
-      font-size: 12px;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-
-    /* Custom scrollbar */
-    .code-output::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    .code-output::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .code-output::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-    }
-
-    /* Toast notification */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px 20px;
-      font-size: 14px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .toast .toast-icon {
-      color: var(--success);
-    }
-
-    /* New conversion button */
-    .new-conversion {
-      margin-top: 32px;
-      text-align: center;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 40px 0 0;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .results.active {
-      animation: fadeInUp 0.5s ease;
-    }
-
-    /* Tab navigation for code view */
     .tab-nav {
       display: flex;
       gap: 0;
@@ -619,8 +667,8 @@
     }
 
     .tab-btn.active {
-      color: var(--accent-light);
-      border-bottom-color: var(--accent);
+      color: var(--accent-teal);
+      border-bottom-color: var(--accent-teal);
     }
 
     .tab-content {
@@ -630,94 +678,222 @@
     .tab-content.active {
       display: block;
     }
+
+    .code-panel .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-panel .card-header h3 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    .code-panel .card-header .copy-btn {
+      padding: 6px 14px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .code-panel .card-header .copy-btn:hover {
+      background: #e5e7eb;
+      color: var(--text-primary);
+    }
+
+    .code-panel .card-header .copy-btn.copied {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--success);
+    }
+
+    .code-output {
+      padding: 20px;
+      max-height: 400px;
+      overflow: auto;
+      background: #fafbfc;
+    }
+
+    .code-output pre {
+      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .code-output::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .code-output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .code-output::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      font-size: 14px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast .toast-icon {
+      color: var(--success);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
-  <div class="bg-gradient"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="navbar-brand">LucidSVG</a>
+    <div class="navbar-links">
+      <a href="#" class="active">Home</a>
+      <a href="#converter" id="navConverter">Converter</a>
+    </div>
+    <button class="navbar-toggle" title="Theme toggle"></button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Clearer <span>Thumbnails.</span></h1>
+    <p>Convert your images to ultra-light, crisp SVG thumbnails instantly.</p>
+  </section>
 
   <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div class="badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Client-Side Processing
-      </div>
-      <h1>PNG → SVG Converter</h1>
-      <p>Convert your PNG icons to clean, scalable SVG code. Everything runs locally in your browser — no uploads needed.</p>
-    </div>
-
-    <!-- Settings -->
-    <div class="settings-panel">
-      <div class="setting-group">
-        <label>Color Mode</label>
-        <select id="colorMode">
-          <option value="color">Full Color</option>
-          <option value="binary">Black & White</option>
-          <option value="grayscale">Grayscale (6 shades)</option>
-          <option value="detailed">Detailed (32 colors)</option>
-          <option value="ultra">Ultra (48 colors)</option>
-        </select>
-      </div>
-      <div class="setting-group">
-        <label>Noise Filter</label>
-        <input type="range" id="turdSize" min="0" max="10" value="2" step="1">
-        <div class="range-value">
-          <span>Keep all</span>
-          <span class="val" id="turdValue">2</span>
-          <span>Clean</span>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>Corner Sharpness</label>
-        <input type="range" id="alphaMax" min="0" max="1.5" value="1" step="0.05">
-        <div class="range-value">
-          <span>Sharp</span>
-          <span class="val" id="alphaValue">1.00</span>
-          <span>Smooth</span>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>Curve Precision</label>
-        <input type="range" id="optTolerance" min="0" max="1" value="0.2" step="0.05">
-        <div class="range-value">
-          <span>Exact</span>
-          <span class="val" id="optValue">0.20</span>
-          <span>Loose</span>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>Path Precision</label>
-        <input type="range" id="pathPrecision" min="0" max="3" value="1" step="1">
-        <div class="range-value">
-          <span>Compact</span>
-          <span class="val" id="precisionValue">1</span>
-          <span>Detailed</span>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>Min Path Size</label>
-        <input type="range" id="minPathLen" min="0" max="200" value="20" step="10">
-        <div class="range-value">
-          <span>Keep all</span>
-          <span class="val" id="minPathValue">20</span>
-          <span>Clean</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Drop zone -->
-    <div class="drop-zone" id="dropZone">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="17 8 12 3 7 8"/>
-          <line x1="12" y1="3" x2="12" y2="15"/>
-        </svg>
+    <div class="drop-zone-wrapper" id="dropZoneWrapper">
+      <div class="drop-zone" id="dropZone">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <h3>Drop an image to start.</h3>
+        <p>Supporting JPG, PNG, and WebP up to 10MB</p>
+        <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+        <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp">
       </div>
-      <h3>Drop your PNG file here</h3>
-      <p>or click to browse your files</p>
-      <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse Files</button>
-      <input type="file" id="fileInput" accept=".png,image/png">
+    </div>
+
+    <!-- Advanced Settings (collapsed) -->
+    <div class="settings-toggle-wrapper">
+      <button class="settings-toggle-btn" id="settingsToggle" onclick="toggleSettings()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Advanced Settings
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+
+    <div class="settings-collapse" id="settingsPanel">
+      <div class="settings-panel">
+        <div class="setting-group">
+          <label>Color Mode</label>
+          <select id="colorMode">
+            <option value="color">Full Color</option>
+            <option value="binary">Black & White</option>
+            <option value="grayscale">Grayscale (6 shades)</option>
+            <option value="detailed">Detailed (32 colors)</option>
+            <option value="ultra">Ultra (48 colors)</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label>Noise Filter</label>
+          <input type="range" id="turdSize" min="0" max="10" value="2" step="1">
+          <div class="range-value">
+            <span>Keep all</span>
+            <span class="val" id="turdValue">2</span>
+            <span>Clean</span>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label>Corner Sharpness</label>
+          <input type="range" id="alphaMax" min="0" max="1.5" value="1" step="0.05">
+          <div class="range-value">
+            <span>Sharp</span>
+            <span class="val" id="alphaValue">1.00</span>
+            <span>Smooth</span>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label>Curve Precision</label>
+          <input type="range" id="optTolerance" min="0" max="1" value="0.2" step="0.05">
+          <div class="range-value">
+            <span>Exact</span>
+            <span class="val" id="optValue">0.20</span>
+            <span>Loose</span>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label>Path Precision</label>
+          <input type="range" id="pathPrecision" min="0" max="3" value="1" step="1">
+          <div class="range-value">
+            <span>Compact</span>
+            <span class="val" id="precisionValue">1</span>
+            <span>Detailed</span>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label>Min Path Size</label>
+          <input type="range" id="minPathLen" min="0" max="200" value="20" step="10">
+          <div class="range-value">
+            <span>Keep all</span>
+            <span class="val" id="minPathValue">20</span>
+            <span>Clean</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Processing -->
@@ -746,7 +922,6 @@
         </div>
       </div>
 
-      <!-- Preview comparison -->
       <div class="preview-grid">
         <div class="preview-card">
           <div class="card-header">
@@ -765,15 +940,14 @@
           <div class="preview-body" id="svgPreview"></div>
           <div class="color-controls">
             <label>Background:</label>
-            <div class="bg-option active" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')"></div>
-            <div class="bg-option" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')"></div>
+            <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')"></div>
+            <div class="bg-option active" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')"></div>
             <div class="bg-option" style="background:#f3f4f6" onclick="setSvgBg(this, '#f3f4f6')"></div>
             <div class="bg-option" style="background:#000000" onclick="setSvgBg(this, '#000000')"></div>
           </div>
         </div>
       </div>
 
-      <!-- Code output -->
       <div class="code-panel">
         <div class="tab-nav">
           <button class="tab-btn active" onclick="switchTab('svg', this)">SVG Code</button>
@@ -805,6 +979,41 @@
     </div>
   </div>
 
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="step-number">01</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <h3>Upload</h3>
+        <p>Drag your high-res image into the drop zone above.</p>
+      </div>
+      <div class="feature-card">
+        <div class="step-number">02</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <h3>Process</h3>
+        <p>Our engine creates a lightweight vector version instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="step-number">03</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <h3>Download</h3>
+        <p>Save your SVG and enjoy perfect clarity at any scale.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Toast -->
   <div class="toast" id="toast">
     <span class="toast-icon">✓</span>
@@ -824,6 +1033,7 @@
 
     // Elements
     const dropZone = document.getElementById('dropZone');
+    const dropZoneWrapper = document.getElementById('dropZoneWrapper');
     const fileInput = document.getElementById('fileInput');
     const processing = document.getElementById('processing');
     const results = document.getElementById('results');
@@ -849,17 +1059,31 @@
     const minPathValueEl = document.getElementById('minPathValue');
     minPathSlider.addEventListener('input', () => minPathValueEl.textContent = minPathSlider.value);
 
+    // Settings toggle
+    window.toggleSettings = function() {
+      const panel = document.getElementById('settingsPanel');
+      const btn = document.getElementById('settingsToggle');
+      panel.classList.toggle('open');
+      btn.classList.toggle('open');
+    };
+
     // Drag & Drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault(); dropZone.classList.remove('drag-over');
       const file = e.dataTransfer.files[0];
-      if (file && file.type === 'image/png') processFile(file);
-      else showToast('Please drop a PNG file.');
+      if (file && (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/webp')) processFile(file);
+      else showToast('Please drop a JPG, PNG, or WebP file.');
     });
     dropZone.addEventListener('click', (e) => { if (e.target.tagName !== 'BUTTON') fileInput.click(); });
     fileInput.addEventListener('change', (e) => { if (e.target.files[0]) processFile(e.target.files[0]); });
+
+    // Converter nav link scrolls to drop zone
+    document.getElementById('navConverter').addEventListener('click', (e) => {
+      e.preventDefault();
+      dropZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
 
     // ─── Color quantization (median-cut, no blur) ───
     function quantizeColors(imageData, numColors) {
@@ -909,17 +1133,16 @@
     function assignPixelsToPalette(imageData, palette) {
       const { data } = imageData;
       const totalPixels = data.length / 4;
-      // For each pixel, store which palette index it belongs to (-1 = transparent)
       const assignment = new Int16Array(totalPixels).fill(-1);
       for (let px = 0; px < totalPixels; px++) {
         const i = px * 4;
-        if (data[i + 3] < 128) continue; // transparent
+        if (data[i + 3] < 128) continue;
         const r = data[i], g = data[i+1], b = data[i+2];
         let bestIdx = 0, bestDist = Infinity;
         for (let c = 0; c < palette.length; c++) {
           const pc = palette[c].color;
           const dr = r - pc[0], dg = g - pc[1], db = b - pc[2];
-          const dist = dr*dr + dg*dg + db*db; // squared distance (skip sqrt for speed)
+          const dist = dr*dr + dg*dg + db*db;
           if (dist < bestDist) { bestDist = dist; bestIdx = c; }
         }
         assignment[px] = bestIdx;
@@ -938,9 +1161,9 @@
       for (let px = 0; px < totalPixels; px++) {
         const i = px * 4;
         if (assignment[px] === colorIndex) {
-          out.data[i] = out.data[i+1] = out.data[i+2] = 0;   // foreground
+          out.data[i] = out.data[i+1] = out.data[i+2] = 0;
         } else {
-          out.data[i] = out.data[i+1] = out.data[i+2] = 255; // background
+          out.data[i] = out.data[i+1] = out.data[i+2] = 255;
         }
         out.data[i + 3] = 255;
       }
@@ -956,8 +1179,11 @@
 
     // ─── Main process ───
     async function processFile(file) {
-      currentFileName = file.name.replace(/\.png$/i, '');
-      dropZone.style.display = 'none';
+      currentFileName = file.name.replace(/\.(png|jpe?g|webp)$/i, '');
+      dropZoneWrapper.style.display = 'none';
+      document.querySelector('.settings-toggle-wrapper').style.display = 'none';
+      document.getElementById('settingsPanel').style.display = 'none';
+      document.querySelector('.features').style.display = 'none';
       processing.classList.add('active');
       results.classList.remove('active');
 
@@ -1023,7 +1249,6 @@
                 '\n</svg>';
             } else {
               const palette = quantizeColors(imageData, numColors);
-              // Assign every pixel to its nearest palette color (no pixel is ever dropped)
               const assignment = assignPixelsToPalette(imageData, palette);
               const layers = [];
 
@@ -1070,7 +1295,10 @@
           } catch(err) {
             console.error('Trace error:', err);
             processing.classList.remove('active');
-            dropZone.style.display = '';
+            dropZoneWrapper.style.display = '';
+            document.querySelector('.settings-toggle-wrapper').style.display = '';
+            document.getElementById('settingsPanel').style.display = '';
+            document.querySelector('.features').style.display = '';
             showToast('Error tracing image: ' + err.message);
           }
         };
@@ -1147,7 +1375,16 @@
       document.getElementById('svgPreview').closest('.preview-body').style.background = color;
     };
 
-    window.resetAll = function() { results.classList.remove('active'); dropZone.style.display = ''; fileInput.value = ''; currentSVGString = ''; currentHTMLString = ''; };
+    window.resetAll = function() {
+      results.classList.remove('active');
+      dropZoneWrapper.style.display = '';
+      document.querySelector('.settings-toggle-wrapper').style.display = '';
+      document.getElementById('settingsPanel').style.display = '';
+      document.querySelector('.features').style.display = '';
+      fileInput.value = '';
+      currentSVGString = '';
+      currentHTMLString = '';
+    };
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
