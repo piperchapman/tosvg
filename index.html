@@ -685,6 +685,24 @@
           <span>Loose</span>
         </div>
       </div>
+      <div class="setting-group">
+        <label>Path Precision</label>
+        <input type="range" id="pathPrecision" min="0" max="3" value="1" step="1">
+        <div class="range-value">
+          <span>Compact</span>
+          <span class="val" id="precisionValue">1</span>
+          <span>Detailed</span>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label>Min Path Size</label>
+        <input type="range" id="minPathLen" min="0" max="200" value="20" step="10">
+        <div class="range-value">
+          <span>Keep all</span>
+          <span class="val" id="minPathValue">20</span>
+          <span>Clean</span>
+        </div>
+      </div>
     </div>
 
     <!-- Drop zone -->
@@ -822,6 +840,14 @@
     const optSlider = document.getElementById('optTolerance');
     const optValueEl = document.getElementById('optValue');
     optSlider.addEventListener('input', () => optValueEl.textContent = parseFloat(optSlider.value).toFixed(2));
+
+    const precisionSlider = document.getElementById('pathPrecision');
+    const precisionValueEl = document.getElementById('precisionValue');
+    precisionSlider.addEventListener('input', () => precisionValueEl.textContent = precisionSlider.value);
+
+    const minPathSlider = document.getElementById('minPathLen');
+    const minPathValueEl = document.getElementById('minPathValue');
+    minPathSlider.addEventListener('input', () => minPathValueEl.textContent = minPathSlider.value);
 
     // Drag & Drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
@@ -987,8 +1013,10 @@
               bwCtx.putImageData(bwData, 0, 0);
 
               const pathList = traceCanvas(bwCanvas, potraceOpts);
-              const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height);
-              const pathDs = extractPaths(rawSvg);
+              const precision = parseInt(precisionSlider.value);
+              const minLen = parseInt(minPathSlider.value);
+              const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height, precision);
+              const pathDs = extractPaths(rawSvg).filter(d => d.length >= minLen);
 
               svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${img.width} ${img.height}" width="${img.width}" height="${img.height}">\n` +
                 pathDs.map(d => `  <path d="${d}" fill="#000000" stroke="none"/>`).join('\n') +
@@ -1002,8 +1030,10 @@
               for (let ci = 0; ci < palette.length; ci++) {
                 const mask = createMaskFromAssignment(imageData, assignment, ci);
                 const pathList = traceCanvas(mask, potraceOpts);
-                const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height);
-                const pathDs = extractPaths(rawSvg);
+                const precision = parseInt(precisionSlider.value);
+                const minLen = parseInt(minPathSlider.value);
+                const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height, precision);
+                const pathDs = extractPaths(rawSvg).filter(d => d.length >= minLen);
                 if (pathDs.length > 0) {
                   layers.push({
                     color: rgbToHex(...palette[ci].color),
