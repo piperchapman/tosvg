@@ -30,6 +30,57 @@
       --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
     }
 
+    [data-theme="dark"] {
+      --bg-primary: #0f1117;
+      --bg-white: #1a1c25;
+      --bg-card: #1a1c25;
+      --bg-card-hover: #22242e;
+      --accent: #5ec4d4;
+      --accent-teal: #38bdf8;
+      --accent-light: #67d4e5;
+      --accent-glow: rgba(56, 189, 248, 0.2);
+      --text-primary: #e8eaf0;
+      --text-secondary: #a0a8bc;
+      --text-muted: #636b7f;
+      --border: #2a2d38;
+      --border-active: rgba(56, 189, 248, 0.5);
+      --success: #34d399;
+      --danger: #f87171;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    [data-theme="dark"] .preview-body {
+      background: repeating-conic-gradient(#2a2d38 0% 25%, transparent 0% 50%) 0 0 / 20px 20px;
+    }
+
+    [data-theme="dark"] .code-output {
+      background: #13151b;
+    }
+
+    [data-theme="dark"] .drop-zone:hover,
+    [data-theme="dark"] .drop-zone.drag-over {
+      background: #1e2530;
+    }
+
+    [data-theme="dark"] .drop-zone .icon {
+      background: #1e2a35;
+    }
+
+    [data-theme="dark"] .code-panel .card-header .copy-btn:hover {
+      background: #2a2d38;
+    }
+
+    [data-theme="dark"] .preset-size-badge,
+    [data-theme="dark"] .size-badge {
+      background: #1e2a35;
+    }
+
+    [data-theme="dark"] .feature-card .step-number {
+      color: #1e2a35;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -99,15 +150,26 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: var(--accent);
-      border: none;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+
+    .navbar-toggle svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s, opacity 0.3s;
     }
 
     .navbar-toggle:hover {
       transform: scale(1.1);
-      box-shadow: 0 2px 12px rgba(13, 59, 84, 0.3);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      border-color: var(--accent-teal);
     }
 
     /* ─── Container ─── */
@@ -634,6 +696,85 @@
       border-color: var(--accent-teal);
     }
 
+    /* ─── Preset Tabs ─── */
+    .preset-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .preset-tabs {
+      display: flex;
+      gap: 0;
+    }
+
+    .preset-tab {
+      padding: 12px 18px;
+      background: none;
+      border: none;
+      border-bottom: 2.5px solid transparent;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .preset-tab:hover {
+      color: var(--text-secondary);
+    }
+
+    .preset-tab.active {
+      color: var(--accent-teal);
+      border-bottom-color: var(--accent-teal);
+    }
+
+    .preset-tab .preset-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .preset-tab[data-preset="lite"] .preset-dot { background: #10b981; }
+    .preset-tab[data-preset="balanced"] .preset-dot { background: #f59e0b; }
+    .preset-tab[data-preset="highres"] .preset-dot { background: #6366f1; }
+
+    .preset-size-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      background: #e8f4f8;
+      color: var(--accent-teal);
+      border-radius: 999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .svg-preview-pane {
+      display: none;
+    }
+
+    .svg-preview-pane.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInPreset 0.3s ease;
+    }
+
+    @keyframes fadeInPreset {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     /* Code panel */
     .code-panel {
       background: var(--bg-white);
@@ -797,7 +938,18 @@
       <a href="#" class="active">Home</a>
       <a href="#converter" id="navConverter">Converter</a>
     </div>
-    <button class="navbar-toggle" title="Theme toggle"></button>
+    <button class="navbar-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
+      <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
   </nav>
 
   <!-- Hero -->
@@ -915,10 +1067,6 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download SVG
           </button>
-          <button class="btn btn-danger" onclick="resetAll()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Clear
-          </button>
         </div>
       </div>
 
@@ -926,18 +1074,36 @@
         <div class="preview-card">
           <div class="card-header">
             <h3>Original PNG</h3>
-            <span class="size-badge" id="pngSize">—</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn btn-secondary" style="padding:6px 14px;font-size:12px" onclick="document.getElementById('fileInput').click()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload New
+              </button>
+              <span class="size-badge" id="pngSize">—</span>
+            </div>
           </div>
           <div class="preview-body">
             <img id="pngPreview" alt="Original PNG">
           </div>
         </div>
         <div class="preview-card">
-          <div class="card-header">
-            <h3>Converted SVG</h3>
-            <span class="size-badge" id="svgSize">—</span>
+          <div class="preset-header">
+            <div class="preset-tabs" id="presetTabs">
+              <button class="preset-tab active" data-preset="lite" onclick="switchPreset('lite', this)">
+                <span class="preset-dot"></span>Lite
+              </button>
+              <button class="preset-tab" data-preset="balanced" onclick="switchPreset('balanced', this)">
+                <span class="preset-dot"></span>Balanced
+              </button>
+              <button class="preset-tab" data-preset="highres" onclick="switchPreset('highres', this)">
+                <span class="preset-dot"></span>High-Res
+              </button>
+            </div>
+            <span class="preset-size-badge" id="svgSize">—</span>
           </div>
-          <div class="preview-body" id="svgPreview"></div>
+          <div class="preview-body svg-preview-pane active" id="svgPreview-lite"></div>
+          <div class="preview-body svg-preview-pane" id="svgPreview-balanced"></div>
+          <div class="preview-body svg-preview-pane" id="svgPreview-highres"></div>
           <div class="color-controls">
             <label>Background:</label>
             <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')"></div>
@@ -1026,8 +1192,16 @@
 
     window.POTRACE = { traceCanvas, getSVG };
 
+    // ─── Presets ───
+    const PRESETS = {
+      lite:     { colorMode: 'color',    numColors: 16, turdsize: 4, alphamax: 1.34, opttolerance: 0.5,  precision: 0, minPathLen: 50 },
+      balanced: { colorMode: 'detailed',  numColors: 32, turdsize: 2, alphamax: 1.00, opttolerance: 0.2,  precision: 1, minPathLen: 20 },
+      highres:  { colorMode: 'ultra',     numColors: 48, turdsize: 0, alphamax: 0.55, opttolerance: 0.05, precision: 3, minPathLen: 0  },
+    };
+
     // State
-    let currentSVGString = '';
+    let currentSVGs = { lite: '', balanced: '', highres: '' };
+    let activePreset = 'lite';
     let currentFileName = 'converted';
     let currentHTMLString = '';
 
@@ -1066,6 +1240,26 @@
       panel.classList.toggle('open');
       btn.classList.toggle('open');
     };
+
+    // Theme toggle (day/night)
+    window.toggleTheme = function() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      document.getElementById('sunIcon').style.display = isDark ? 'block' : 'none';
+      document.getElementById('moonIcon').style.display = isDark ? 'none' : 'block';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+
+    // Restore saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('sunIcon').style.display = 'none';
+        document.getElementById('moonIcon').style.display = 'block';
+      }
+    })();
 
     // Drag & Drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
@@ -1177,6 +1371,67 @@
       return matches.map(m => m.slice(3, -1)).filter(d => d.length > 0);
     }
 
+    // ─── Trace with a specific preset ───
+    function traceWithPreset(imageData, img, preset) {
+      const p = PRESETS[preset];
+      const potraceOpts = {
+        turdsize: p.turdsize,
+        alphamax: p.alphamax,
+        opttolerance: p.opttolerance,
+        optcurve: true,
+      };
+
+      const palette = quantizeColors(imageData, p.numColors);
+      const assignment = assignPixelsToPalette(imageData, palette);
+      const layers = [];
+
+      for (let ci = 0; ci < palette.length; ci++) {
+        const mask = createMaskFromAssignment(imageData, assignment, ci);
+        const pathList = traceCanvas(mask, potraceOpts);
+        const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height, p.precision);
+        const pathDs = extractPaths(rawSvg).filter(d => d.length >= p.minPathLen);
+        if (pathDs.length > 0) {
+          layers.push({ color: rgbToHex(...palette[ci].color), paths: pathDs });
+        }
+      }
+
+      let inner = '';
+      layers.forEach(layer => {
+        layer.paths.forEach(d => {
+          inner += `  <path d="${d}" fill="${layer.color}" stroke="none"/>\n`;
+        });
+      });
+
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${img.width} ${img.height}" width="${img.width}" height="${img.height}">\n${inner}</svg>`;
+    }
+
+    // ─── Show a preset in the UI ───
+    function showPreset(preset) {
+      activePreset = preset;
+      const svgStr = currentSVGs[preset];
+
+      // Update tabs
+      document.querySelectorAll('.preset-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`.preset-tab[data-preset="${preset}"]`).classList.add('active');
+
+      // Update preview panes
+      document.querySelectorAll('.svg-preview-pane').forEach(p => p.classList.remove('active'));
+      document.getElementById('svgPreview-' + preset).classList.add('active');
+
+      // Update size badge
+      const svgKB = (new Blob([svgStr]).size / 1024).toFixed(1);
+      document.getElementById('svgSize').textContent = svgKB + ' KB';
+
+      // Update code panels
+      currentHTMLString = generateHTMLWrapper(svgStr);
+      document.getElementById('svgCode').textContent = formatSVG(svgStr);
+      document.getElementById('htmlCode').textContent = currentHTMLString;
+    }
+
+    window.switchPreset = function(preset, btn) {
+      showPreset(preset);
+    };
+
     // ─── Main process ───
     async function processFile(file) {
       currentFileName = file.name.replace(/\.(png|jpe?g|webp)$/i, '');
@@ -1203,92 +1458,22 @@
           ctx.drawImage(img, 0, 0);
           const imageData = ctx.getImageData(0, 0, img.width, img.height);
 
-          const colorMode = document.getElementById('colorMode').value;
-          const potraceOpts = {
-            turdsize: parseInt(turdSlider.value),
-            alphamax: parseFloat(alphaSlider.value),
-            opttolerance: parseFloat(optSlider.value),
-            optcurve: true,
-          };
-
-          let numColors;
-          switch(colorMode) {
-            case 'binary': numColors = 2; break;
-            case 'grayscale': numColors = 6; break;
-            case 'color': numColors = 16; break;
-            case 'detailed': numColors = 32; break;
-            case 'ultra': numColors = 48; break;
-            default: numColors = 16;
-          }
-
           try {
-            let svgStr;
+            // Render all three presets
+            for (const preset of ['lite', 'balanced', 'highres']) {
+              const svgStr = traceWithPreset(imageData, img, preset);
+              currentSVGs[preset] = svgStr;
 
-            if (colorMode === 'binary') {
-              const bwCanvas = document.createElement('canvas');
-              bwCanvas.width = img.width; bwCanvas.height = img.height;
-              const bwCtx = bwCanvas.getContext('2d');
-              const bwData = bwCtx.createImageData(img.width, img.height);
-              const d = imageData.data;
-              for (let i = 0; i < d.length; i += 4) {
-                const gray = d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114;
-                const val = (d[i+3] > 128 && gray < 128) ? 0 : 255;
-                bwData.data[i] = bwData.data[i+1] = bwData.data[i+2] = val;
-                bwData.data[i+3] = 255;
-              }
-              bwCtx.putImageData(bwData, 0, 0);
-
-              const pathList = traceCanvas(bwCanvas, potraceOpts);
-              const precision = parseInt(precisionSlider.value);
-              const minLen = parseInt(minPathSlider.value);
-              const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height, precision);
-              const pathDs = extractPaths(rawSvg).filter(d => d.length >= minLen);
-
-              svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${img.width} ${img.height}" width="${img.width}" height="${img.height}">\n` +
-                pathDs.map(d => `  <path d="${d}" fill="#000000" stroke="none"/>`).join('\n') +
-                '\n</svg>';
-            } else {
-              const palette = quantizeColors(imageData, numColors);
-              const assignment = assignPixelsToPalette(imageData, palette);
-              const layers = [];
-
-              for (let ci = 0; ci < palette.length; ci++) {
-                const mask = createMaskFromAssignment(imageData, assignment, ci);
-                const pathList = traceCanvas(mask, potraceOpts);
-                const precision = parseInt(precisionSlider.value);
-                const minLen = parseInt(minPathSlider.value);
-                const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height, precision);
-                const pathDs = extractPaths(rawSvg).filter(d => d.length >= minLen);
-                if (pathDs.length > 0) {
-                  layers.push({
-                    color: rgbToHex(...palette[ci].color),
-                    paths: pathDs
-                  });
-                }
-              }
-
-              let inner = '';
-              layers.forEach(layer => {
-                layer.paths.forEach(d => {
-                  inner += `  <path d="${d}" fill="${layer.color}" stroke="none"/>\n`;
-                });
-              });
-
-              svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${img.width} ${img.height}" width="${img.width}" height="${img.height}">\n${inner}</svg>`;
+              // Populate preview pane
+              const pane = document.getElementById('svgPreview-' + preset);
+              pane.innerHTML = svgStr;
+              const svgEl = pane.querySelector('svg');
+              if (svgEl) { svgEl.style.maxWidth = '180px'; svgEl.style.maxHeight = '180px'; }
             }
 
-            currentSVGString = svgStr;
-            currentHTMLString = generateHTMLWrapper(svgStr);
-            document.getElementById('svgPreview').innerHTML = svgStr;
-
-            const svgEl = document.getElementById('svgPreview').querySelector('svg');
-            if (svgEl) { svgEl.style.maxWidth = '180px'; svgEl.style.maxHeight = '180px'; }
-
-            document.getElementById('svgCode').textContent = formatSVG(svgStr);
-            document.getElementById('htmlCode').textContent = currentHTMLString;
-
-            const svgKB = (new Blob([svgStr]).size / 1024).toFixed(1);
-            document.getElementById('svgSize').textContent = svgKB + ' KB';
+            // Default to Lite tab
+            activePreset = 'lite';
+            showPreset('lite');
 
             processing.classList.remove('active');
             results.classList.add('active');
@@ -1345,7 +1530,7 @@
     };
 
     window.copyCode = function(type) {
-      const code = type === 'svg' ? currentSVGString : currentHTMLString;
+      const code = type === 'svg' ? currentSVGs[activePreset] : currentHTMLString;
       navigator.clipboard.writeText(code).then(() => {
         document.querySelectorAll('.copy-btn').forEach(b => {
           if (b.textContent.toLowerCase().includes(type)) {
@@ -1358,7 +1543,7 @@
     };
 
     window.downloadHTML = function() { download(currentHTMLString, currentFileName + '.html', 'text/html'); };
-    window.downloadSVG = function() { download(currentSVGString, currentFileName + '.svg', 'image/svg+xml'); };
+    window.downloadSVG = function() { download(currentSVGs[activePreset], currentFileName + '-' + activePreset + '.svg', 'image/svg+xml'); };
     function download(content, filename, mimeType) {
       const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
@@ -1372,7 +1557,7 @@
     window.setSvgBg = function(el, color) {
       document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
       el.classList.add('active');
-      document.getElementById('svgPreview').closest('.preview-body').style.background = color;
+      document.querySelectorAll('.svg-preview-pane').forEach(p => p.style.background = color);
     };
 
     window.resetAll = function() {
@@ -1382,7 +1567,8 @@
       document.getElementById('settingsPanel').style.display = '';
       document.querySelector('.features').style.display = '';
       fileInput.value = '';
-      currentSVGString = '';
+      currentSVGs = { lite: '', balanced: '', highres: '' };
+      activePreset = 'lite';
       currentHTMLString = '';
     };
 
