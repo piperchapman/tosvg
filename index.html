@@ -654,7 +654,8 @@
           <option value="color">Full Color</option>
           <option value="binary">Black & White</option>
           <option value="grayscale">Grayscale (6 shades)</option>
-          <option value="detailed">Detailed (24 colors)</option>
+          <option value="detailed">Detailed (32 colors)</option>
+          <option value="ultra">Ultra (48 colors)</option>
         </select>
       </div>
       <div class="setting-group">
@@ -863,7 +864,7 @@
       const palette = medianCut(pixels, depth);
       const merged = [];
       palette.forEach(p => {
-        const existing = merged.find(m => colorDist(m.color, p.color) < 20);
+        const existing = merged.find(m => colorDist(m.color, p.color) < 12);
         if (existing) existing.count += p.count;
         else merged.push({ ...p });
       });
@@ -878,24 +879,42 @@
       return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
     }
 
-    // ─── Create binary bitmap for a specific color ───
-    function createColorMask(imageData, targetColor, threshold) {
-      const { data, width, height } = imageData;
+    // ─── Assign every pixel to its nearest palette color ───
+    function assignPixelsToPalette(imageData, palette) {
+      const { data } = imageData;
+      const totalPixels = data.length / 4;
+      // For each pixel, store which palette index it belongs to (-1 = transparent)
+      const assignment = new Int16Array(totalPixels).fill(-1);
+      for (let px = 0; px < totalPixels; px++) {
+        const i = px * 4;
+        if (data[i + 3] < 128) continue; // transparent
+        const r = data[i], g = data[i+1], b = data[i+2];
+        let bestIdx = 0, bestDist = Infinity;
+        for (let c = 0; c < palette.length; c++) {
+          const pc = palette[c].color;
+          const dr = r - pc[0], dg = g - pc[1], db = b - pc[2];
+          const dist = dr*dr + dg*dg + db*db; // squared distance (skip sqrt for speed)
+          if (dist < bestDist) { bestDist = dist; bestIdx = c; }
+        }
+        assignment[px] = bestIdx;
+      }
+      return assignment;
+    }
+
+    // ─── Create binary bitmap for pixels assigned to a specific palette index ───
+    function createMaskFromAssignment(imageData, assignment, colorIndex) {
+      const { width, height } = imageData;
       const canvas = document.createElement('canvas');
       canvas.width = width; canvas.height = height;
       const ctx = canvas.getContext('2d');
       const out = ctx.createImageData(width, height);
-      for (let i = 0; i < data.length; i += 4) {
-        const a = data[i + 3];
-        if (a < 128) {
-          out.data[i] = out.data[i+1] = out.data[i+2] = 255;
+      const totalPixels = width * height;
+      for (let px = 0; px < totalPixels; px++) {
+        const i = px * 4;
+        if (assignment[px] === colorIndex) {
+          out.data[i] = out.data[i+1] = out.data[i+2] = 0;   // foreground
         } else {
-          const dist = colorDist([data[i], data[i+1], data[i+2]], targetColor);
-          if (dist <= threshold) {
-            out.data[i] = out.data[i+1] = out.data[i+2] = 0;
-          } else {
-            out.data[i] = out.data[i+1] = out.data[i+2] = 255;
-          }
+          out.data[i] = out.data[i+1] = out.data[i+2] = 255; // background
         }
         out.data[i + 3] = 255;
       }
@@ -944,9 +963,10 @@
           switch(colorMode) {
             case 'binary': numColors = 2; break;
             case 'grayscale': numColors = 6; break;
-            case 'color': numColors = 12; break;
-            case 'detailed': numColors = 24; break;
-            default: numColors = 12;
+            case 'color': numColors = 16; break;
+            case 'detailed': numColors = 32; break;
+            case 'ultra': numColors = 48; break;
+            default: numColors = 16;
           }
 
           try {
@@ -975,17 +995,18 @@
                 '\n</svg>';
             } else {
               const palette = quantizeColors(imageData, numColors);
-              const threshold = colorMode === 'grayscale' ? 50 : 35;
+              // Assign every pixel to its nearest palette color (no pixel is ever dropped)
+              const assignment = assignPixelsToPalette(imageData, palette);
               const layers = [];
 
-              for (const entry of palette) {
-                const mask = createColorMask(imageData, entry.color, threshold);
+              for (let ci = 0; ci < palette.length; ci++) {
+                const mask = createMaskFromAssignment(imageData, assignment, ci);
                 const pathList = traceCanvas(mask, potraceOpts);
                 const rawSvg = getSVG(pathList, 1, undefined, img.width, img.height);
                 const pathDs = extractPaths(rawSvg);
                 if (pathDs.length > 0) {
                   layers.push({
-                    color: rgbToHex(...entry.color),
+                    color: rgbToHex(...palette[ci].color),
                     paths: pathDs
                   });
                 }
