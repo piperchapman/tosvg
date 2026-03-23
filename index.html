@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LucidSVG — Clearer Thumbnails</title>
-  <meta name="description" content="Convert your images to ultra-light, crisp SVG thumbnails instantly. Client-side processing, no uploads needed.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta name="description"
+    content="Convert your images to ultra-light, crisp SVG thumbnails instantly. Client-side processing, no uploads needed.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg-primary: #f5f6fa;
@@ -25,9 +28,9 @@
       --danger: #ef4444;
       --radius: 20px;
       --radius-sm: 12px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
     }
 
     [data-theme="dark"] {
@@ -46,9 +49,9 @@
       --border-active: rgba(56, 189, 248, 0.5);
       --success: #34d399;
       --danger: #f87171;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.3);
-      --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
-      --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.4);
     }
 
     [data-theme="dark"] .preview-body {
@@ -140,7 +143,8 @@
       content: '';
       position: absolute;
       bottom: -4px;
-      left: 0; right: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       background: var(--accent-teal);
       border-radius: 1px;
@@ -168,7 +172,7 @@
 
     .navbar-toggle:hover {
       transform: scale(1.1);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
       border-color: var(--accent-teal);
     }
 
@@ -503,7 +507,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .processing p {
@@ -524,8 +530,15 @@
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .results-header {
@@ -623,6 +636,29 @@
       border-bottom: 1px solid var(--border);
     }
 
+    .upload-footer-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-top: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-footer-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
     .preview-card .card-header h3 {
       font-size: 13px;
       font-weight: 600;
@@ -668,86 +704,124 @@
     }
 
     /* Color controls for preview */
+    .svg-preview-wrapper {
+      position: relative;
+      flex-grow: 1;
+    }
+
+    .floating-controls-panel {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      z-index: 10;
+    }
+
     .color-controls {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
-      padding: 12px 20px;
-      border-top: 1px solid var(--border);
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .color-controls label {
-      font-size: 12px;
-      color: var(--text-muted);
+      display: none;
     }
 
     .color-controls .bg-option {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
-      transition: border-color 0.2s;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
     }
 
     .color-controls .bg-option:hover,
     .color-controls .bg-option.active {
+      transform: scale(1.15);
+      border-color: var(--accent-teal);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0);
+    }
+
+    /* ─── Preset UI ─── */
+
+    .minimal-dropdown {
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--bg-primary) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20stroke%3D%22%23888%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%2F%3E%3C%2Fsvg%3E') no-repeat right 10px center;
+      background-size: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 32px 8px 14px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .minimal-dropdown:hover,
+    .minimal-dropdown:focus {
       border-color: var(--accent-teal);
     }
 
-    /* ─── Preset Tabs ─── */
-    .preset-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      border-bottom: 1px solid var(--border);
-      gap: 12px;
+    /* Custom Dropdown UI */
+    .custom-dropdown-menu {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      min-width: 170px;
+      z-index: 20;
+      overflow: hidden;
+      flex-direction: column;
     }
 
-    .preset-tabs {
+    .custom-dropdown-menu.show {
       display: flex;
-      gap: 0;
     }
 
-    .preset-tab {
-      padding: 12px 18px;
+    .custom-dropdown-item {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
       background: none;
       border: none;
-      border-bottom: 2.5px solid transparent;
       font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
       cursor: pointer;
-      transition: all 0.25s ease;
-      position: relative;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .preset-tab:hover {
-      color: var(--text-secondary);
+    .custom-dropdown-item:hover {
+      background: var(--bg-primary);
     }
 
-    .preset-tab.active {
-      color: var(--accent-teal);
-      border-bottom-color: var(--accent-teal);
+    .custom-dropdown-item:not(:last-child) {
+      border-bottom: 1px solid var(--border);
     }
-
-    .preset-tab .preset-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-
-    .preset-tab[data-preset="lite"] .preset-dot { background: #10b981; }
-    .preset-tab[data-preset="balanced"] .preset-dot { background: #f59e0b; }
-    .preset-tab[data-preset="highres"] .preset-dot { background: #6366f1; }
 
     .preset-size-badge {
       font-size: 11px;
@@ -771,8 +845,15 @@
     }
 
     @keyframes fadeInPreset {
-      from { opacity: 0; transform: scale(0.97); }
-      to { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     /* Code panel */
@@ -929,25 +1010,32 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Navbar -->
   <nav class="navbar">
     <a href="#" class="navbar-brand">LucidSVG</a>
     <div class="navbar-links">
-      <a href="#" class="active">Home</a>
-      <a href="#converter" id="navConverter">Converter</a>
+      <a href="#" class="active">Image to SVG</a>
+      <a href="#converter" id="navConverter">SVG Viewer</a>
     </div>
     <button class="navbar-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
-      <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
       </svg>
-      <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" style="display:none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
       </svg>
     </button>
   </nav>
@@ -963,15 +1051,16 @@
     <div class="drop-zone-wrapper" id="dropZoneWrapper">
       <div class="drop-zone" id="dropZone">
         <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
         </div>
         <h3>Drop an image to start.</h3>
         <p>Supporting JPG, PNG, and WebP up to 10MB</p>
-        <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+        <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Upload Image</button>
         <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp">
       </div>
     </div>
@@ -979,12 +1068,17 @@
     <!-- Advanced Settings (collapsed) -->
     <div class="settings-toggle-wrapper">
       <button class="settings-toggle-btn" id="settingsToggle" onclick="toggleSettings()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
         Advanced Settings
-        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
       </button>
     </div>
 
@@ -1056,18 +1150,8 @@
 
     <!-- Results -->
     <div class="results" id="results">
-      <div class="results-header">
+      <div class="results-header" style="margin-bottom: 20px;">
         <h2>Conversion Result</h2>
-        <div class="results-actions">
-          <button class="btn btn-primary" id="downloadHtmlBtn" onclick="downloadHTML()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download HTML
-          </button>
-          <button class="btn btn-secondary" id="downloadSvgBtn" onclick="downloadSVG()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download SVG
-          </button>
-        </div>
       </div>
 
       <div class="preview-grid">
@@ -1075,41 +1159,165 @@
           <div class="card-header">
             <h3>Original PNG</h3>
             <div style="display:flex;align-items:center;gap:10px">
-              <button class="btn btn-secondary" style="padding:6px 14px;font-size:12px" onclick="document.getElementById('fileInput').click()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload New
-              </button>
               <span class="size-badge" id="pngSize">—</span>
             </div>
           </div>
           <div class="preview-body">
             <img id="pngPreview" alt="Original PNG">
           </div>
+          <button class="upload-footer-btn" onclick="document.getElementById('fileInput').click()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Upload New Image
+          </button>
         </div>
         <div class="preview-card">
-          <div class="preset-header">
-            <div class="preset-tabs" id="presetTabs">
-              <button class="preset-tab active" data-preset="lite" onclick="switchPreset('lite', this)">
-                <span class="preset-dot"></span>Lite
-              </button>
-              <button class="preset-tab" data-preset="balanced" onclick="switchPreset('balanced', this)">
-                <span class="preset-dot"></span>Balanced
-              </button>
-              <button class="preset-tab" data-preset="highres" onclick="switchPreset('highres', this)">
-                <span class="preset-dot"></span>High-Res
-              </button>
+          <div class="card-header">
+            <h3>Converted SVG</h3>
+            <div style="display:flex;align-items:center;">
+              <span class="preset-size-badge" id="svgSize">—</span>
             </div>
-            <span class="preset-size-badge" id="svgSize">—</span>
           </div>
-          <div class="preview-body svg-preview-pane active" id="svgPreview-lite"></div>
-          <div class="preview-body svg-preview-pane" id="svgPreview-balanced"></div>
-          <div class="preview-body svg-preview-pane" id="svgPreview-highres"></div>
-          <div class="color-controls">
-            <label>Background:</label>
-            <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')"></div>
-            <div class="bg-option active" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')"></div>
-            <div class="bg-option" style="background:#f3f4f6" onclick="setSvgBg(this, '#f3f4f6')"></div>
-            <div class="bg-option" style="background:#000000" onclick="setSvgBg(this, '#000000')"></div>
+          <div class="svg-preview-wrapper">
+            <div class="preview-body svg-preview-pane" id="svgPreview-lite"></div>
+            <div class="preview-body svg-preview-pane active" id="svgPreview-balanced"></div>
+            <div class="preview-body svg-preview-pane" id="svgPreview-highres"></div>
+            <div class="preview-body svg-preview-pane" id="svgPreview-custom"></div>
+            <div class="floating-controls-panel">
+              <select class="minimal-dropdown" id="presetDropdown" onchange="switchPreset(this.value, this)" style="box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+                <option value="lite">Lite</option>
+                <option value="balanced" selected>Balanced</option>
+                <option value="highres">High-Res</option>
+                <option value="custom" id="customPresetOption" style="display: none;">Custom</option>
+              </select>
+              <div class="color-controls">
+                <label>Background:</label>
+                <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')" title="Dark"></div>
+                <div class="bg-option active" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')" title="Light"></div>
+                <div class="bg-option" style="background:#f3f4f6" onclick="setSvgBg(this, '#f3f4f6')" title="Gray"></div>
+                <div class="bg-option" style="background:#000000" onclick="setSvgBg(this, '#000000')" title="Black"></div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--bg-card);">
+            <button class="btn btn-secondary copy-btn" onclick="copyCode('svg')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy SVG
+            </button>
+            <div style="position: relative;" id="downloadDropdownWrapper">
+              <button class="btn btn-primary" onclick="document.getElementById('downloadMenu').classList.toggle('show')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 2px;">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+              <div id="downloadMenu" class="custom-dropdown-menu">
+                <button class="custom-dropdown-item" onclick="downloadSVG(); this.parentElement.classList.remove('show');">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  SVG Source
+                </button>
+                <button class="custom-dropdown-item" onclick="downloadHTML(); this.parentElement.classList.remove('show');">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  HTML Embed
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Advanced Settings -->
+      <div class="settings-toggle-wrapper">
+        <button class="settings-toggle-btn" id="resultsSettingsToggle" onclick="toggleResultsSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          Advanced Settings
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="settings-collapse" id="resultsSettingsPanel">
+        <div class="settings-panel">
+          <div class="setting-group">
+            <label>Color Mode</label>
+            <select id="resColorMode">
+              <option value="color">Full Color</option>
+              <option value="binary">Black &amp; White</option>
+              <option value="grayscale">Grayscale (6 shades)</option>
+              <option value="detailed">Detailed (32 colors)</option>
+              <option value="ultra">Ultra (48 colors)</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label>Noise Filter</label>
+            <input type="range" id="resTurdSize" min="0" max="10" value="2" step="1">
+            <div class="range-value">
+              <span>Keep all</span>
+              <span class="val" id="resTurdValue">2</span>
+              <span>Clean</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label>Corner Sharpness</label>
+            <input type="range" id="resAlphaMax" min="0" max="1.5" value="1" step="0.05">
+            <div class="range-value">
+              <span>Sharp</span>
+              <span class="val" id="resAlphaValue">1.00</span>
+              <span>Smooth</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label>Curve Precision</label>
+            <input type="range" id="resOptTolerance" min="0" max="1" value="0.2" step="0.05">
+            <div class="range-value">
+              <span>Exact</span>
+              <span class="val" id="resOptValue">0.20</span>
+              <span>Loose</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label>Path Precision</label>
+            <input type="range" id="resPathPrecision" min="0" max="3" value="1" step="1">
+            <div class="range-value">
+              <span>Compact</span>
+              <span class="val" id="resPrecisionValue">1</span>
+              <span>Detailed</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label>Min Path Size</label>
+            <input type="range" id="resMinPathLen" min="0" max="200" value="20" step="10">
+            <div class="range-value">
+              <span>Keep all</span>
+              <span class="val" id="resMinPathValue">20</span>
+              <span>Clean</span>
+            </div>
+          </div>
+          <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 10px;">
+            <button class="btn btn-primary" onclick="traceWithCustomSettings()" id="regenerateBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.92-10.26l5.67-5.67" />
+              </svg>
+              Regenerate with Custom Settings
+            </button>
           </div>
         </div>
       </div>
@@ -1150,29 +1358,33 @@
     <div class="features-grid">
       <div class="feature-card">
         <div class="step-number">01</div>
-        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-          <circle cx="8.5" cy="8.5" r="1.5"/>
-          <polyline points="21 15 16 10 5 21"/>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
         </svg>
         <h3>Upload</h3>
         <p>Drag your high-res image into the drop zone above.</p>
       </div>
       <div class="feature-card">
         <div class="step-number">02</div>
-        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
         <h3>Process</h3>
         <p>Our engine creates a lightweight vector version instantly.</p>
       </div>
       <div class="feature-card">
         <div class="step-number">03</div>
-        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
         <h3>Download</h3>
         <p>Save your SVG and enjoy perfect clarity at any scale.</p>
@@ -1194,23 +1406,24 @@
 
     // ─── Presets ───
     const PRESETS = {
-      lite:     { colorMode: 'color',    numColors: 16, turdsize: 4, alphamax: 1.34, opttolerance: 0.5,  precision: 0, minPathLen: 50 },
-      balanced: { colorMode: 'detailed',  numColors: 32, turdsize: 2, alphamax: 1.00, opttolerance: 0.2,  precision: 1, minPathLen: 20 },
-      highres:  { colorMode: 'ultra',     numColors: 48, turdsize: 0, alphamax: 0.55, opttolerance: 0.05, precision: 3, minPathLen: 0  },
+      lite: { colorMode: 'color', numColors: 16, turdsize: 4, alphamax: 1.34, opttolerance: 0.5, precision: 0, minPathLen: 50 },
+      balanced: { colorMode: 'detailed', numColors: 32, turdsize: 2, alphamax: 1.00, opttolerance: 0.2, precision: 1, minPathLen: 20 },
+      highres: { colorMode: 'ultra', numColors: 48, turdsize: 0, alphamax: 0.55, opttolerance: 0.05, precision: 3, minPathLen: 0 },
     };
 
     // State
-    let currentSVGs = { lite: '', balanced: '', highres: '' };
-    let activePreset = 'lite';
+    let currentSVGs = { lite: '', balanced: '', highres: '', custom: '' };
+    let activePreset = 'balanced';
     let currentFileName = 'converted';
     let currentHTMLString = '';
 
-    // Elements
     const dropZone = document.getElementById('dropZone');
     const dropZoneWrapper = document.getElementById('dropZoneWrapper');
     const fileInput = document.getElementById('fileInput');
     const processing = document.getElementById('processing');
     const results = document.getElementById('results');
+    let currentOriginalImg = null;
+    let currentOriginalImageData = null;
 
     // Sliders
     const turdSlider = document.getElementById('turdSize');
@@ -1233,16 +1446,44 @@
     const minPathValueEl = document.getElementById('minPathValue');
     minPathSlider.addEventListener('input', () => minPathValueEl.textContent = minPathSlider.value);
 
+    // Results panel sliders
+    const resTurdSlider = document.getElementById('resTurdSize');
+    const resTurdValueEl = document.getElementById('resTurdValue');
+    if (resTurdSlider) resTurdSlider.addEventListener('input', () => resTurdValueEl.textContent = resTurdSlider.value);
+
+    const resAlphaSlider = document.getElementById('resAlphaMax');
+    const resAlphaValueEl = document.getElementById('resAlphaValue');
+    if (resAlphaSlider) resAlphaSlider.addEventListener('input', () => resAlphaValueEl.textContent = parseFloat(resAlphaSlider.value).toFixed(2));
+
+    const resOptSlider = document.getElementById('resOptTolerance');
+    const resOptValueEl = document.getElementById('resOptValue');
+    if (resOptSlider) resOptSlider.addEventListener('input', () => resOptValueEl.textContent = parseFloat(resOptSlider.value).toFixed(2));
+
+    const resPrecisionSlider = document.getElementById('resPathPrecision');
+    const resPrecisionValueEl = document.getElementById('resPrecisionValue');
+    if (resPrecisionSlider) resPrecisionSlider.addEventListener('input', () => resPrecisionValueEl.textContent = resPrecisionSlider.value);
+
+    const resMinPathSlider = document.getElementById('resMinPathLen');
+    const resMinPathValueEl = document.getElementById('resMinPathValue');
+    if (resMinPathSlider) resMinPathSlider.addEventListener('input', () => resMinPathValueEl.textContent = resMinPathSlider.value);
+
     // Settings toggle
-    window.toggleSettings = function() {
+    window.toggleSettings = function () {
       const panel = document.getElementById('settingsPanel');
       const btn = document.getElementById('settingsToggle');
       panel.classList.toggle('open');
       btn.classList.toggle('open');
     };
 
+    window.toggleResultsSettings = function () {
+      const panel = document.getElementById('resultsSettingsPanel');
+      const btn = document.getElementById('resultsSettingsToggle');
+      panel.classList.toggle('open');
+      btn.classList.toggle('open');
+    };
+
     // Theme toggle (day/night)
-    window.toggleTheme = function() {
+    window.toggleTheme = function () {
       const html = document.documentElement;
       const isDark = html.getAttribute('data-theme') === 'dark';
       html.setAttribute('data-theme', isDark ? 'light' : 'dark');
@@ -1252,7 +1493,7 @@
     };
 
     // Restore saved theme
-    (function() {
+    (function () {
       const saved = localStorage.getItem('theme');
       if (saved === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -1285,16 +1526,16 @@
       const pixels = [];
       for (let i = 0; i < data.length; i += 4) {
         if (data[i + 3] < 128) continue;
-        pixels.push([data[i], data[i+1], data[i+2]]);
+        pixels.push([data[i], data[i + 1], data[i + 2]]);
       }
       if (pixels.length === 0) return [];
       function medianCut(bucket, depth) {
         if (depth === 0 || bucket.length <= 1) {
           const avg = [0, 0, 0];
           bucket.forEach(p => { avg[0] += p[0]; avg[1] += p[1]; avg[2] += p[2]; });
-          return [{ color: [Math.round(avg[0]/bucket.length), Math.round(avg[1]/bucket.length), Math.round(avg[2]/bucket.length)], count: bucket.length }];
+          return [{ color: [Math.round(avg[0] / bucket.length), Math.round(avg[1] / bucket.length), Math.round(avg[2] / bucket.length)], count: bucket.length }];
         }
-        let ranges = [0,1,2].map(ch => {
+        let ranges = [0, 1, 2].map(ch => {
           let mn = 255, mx = 0;
           bucket.forEach(p => { mn = Math.min(mn, p[ch]); mx = Math.max(mx, p[ch]); });
           return mx - mn;
@@ -1316,7 +1557,7 @@
     }
 
     function colorDist(a, b) {
-      return Math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2 + (a[2]-b[2])**2);
+      return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2);
     }
 
     function rgbToHex(r, g, b) {
@@ -1331,12 +1572,12 @@
       for (let px = 0; px < totalPixels; px++) {
         const i = px * 4;
         if (data[i + 3] < 128) continue;
-        const r = data[i], g = data[i+1], b = data[i+2];
+        const r = data[i], g = data[i + 1], b = data[i + 2];
         let bestIdx = 0, bestDist = Infinity;
         for (let c = 0; c < palette.length; c++) {
           const pc = palette[c].color;
           const dr = r - pc[0], dg = g - pc[1], db = b - pc[2];
-          const dist = dr*dr + dg*dg + db*db;
+          const dist = dr * dr + dg * dg + db * db;
           if (dist < bestDist) { bestDist = dist; bestIdx = c; }
         }
         assignment[px] = bestIdx;
@@ -1355,9 +1596,9 @@
       for (let px = 0; px < totalPixels; px++) {
         const i = px * 4;
         if (assignment[px] === colorIndex) {
-          out.data[i] = out.data[i+1] = out.data[i+2] = 0;
+          out.data[i] = out.data[i + 1] = out.data[i + 2] = 0;
         } else {
-          out.data[i] = out.data[i+1] = out.data[i+2] = 255;
+          out.data[i] = out.data[i + 1] = out.data[i + 2] = 255;
         }
         out.data[i + 3] = 255;
       }
@@ -1410,13 +1651,14 @@
       activePreset = preset;
       const svgStr = currentSVGs[preset];
 
-      // Update tabs
-      document.querySelectorAll('.preset-tab').forEach(t => t.classList.remove('active'));
-      document.querySelector(`.preset-tab[data-preset="${preset}"]`).classList.add('active');
+      // Update dropdown
+      const dropdown = document.getElementById('presetDropdown');
+      if (dropdown && dropdown.value !== preset) dropdown.value = preset;
 
       // Update preview panes
       document.querySelectorAll('.svg-preview-pane').forEach(p => p.classList.remove('active'));
-      document.getElementById('svgPreview-' + preset).classList.add('active');
+      const activePane = document.getElementById('svgPreview-' + preset);
+      if (activePane) activePane.classList.add('active');
 
       // Update size badge
       const svgKB = (new Blob([svgStr]).size / 1024).toFixed(1);
@@ -1428,8 +1670,65 @@
       document.getElementById('htmlCode').textContent = currentHTMLString;
     }
 
-    window.switchPreset = function(preset, btn) {
+    window.switchPreset = function (preset, btn) {
       showPreset(preset);
+    };
+
+    window.traceWithCustomSettings = async function () {
+      if (!currentOriginalImageData || !currentOriginalImg) return;
+
+      const btn = document.getElementById('regenerateBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px;margin:0 8px 0 0;display:inline-block;vertical-align:middle;"></div> Generating...';
+      btn.disabled = true;
+
+      // Small timeout to allow UI update
+      setTimeout(async () => {
+        try {
+          // Read values from results panel
+          const colorMode = document.getElementById('resColorMode').value;
+          let numColors = 16;
+          if (colorMode === 'detailed') numColors = 32;
+          else if (colorMode === 'ultra') numColors = 48;
+          else if (colorMode === 'binary') numColors = 2;
+          else if (colorMode === 'grayscale') numColors = 6;
+
+          // Temporary override of PRESETS 'custom' to use traceWithPreset logic smoothly
+          PRESETS['custom'] = {
+            colorMode: colorMode,
+            numColors: numColors,
+            turdsize: parseInt(document.getElementById('resTurdSize').value, 10),
+            alphamax: parseFloat(document.getElementById('resAlphaMax').value),
+            opttolerance: parseFloat(document.getElementById('resOptTolerance').value),
+            precision: parseInt(document.getElementById('resPathPrecision').value, 10),
+            minPathLen: parseInt(document.getElementById('resMinPathLen').value, 10)
+          };
+
+          const svgStr = traceWithPreset(currentOriginalImageData, currentOriginalImg, 'custom');
+          currentSVGs['custom'] = svgStr;
+
+          const pane = document.getElementById('svgPreview-custom');
+          pane.innerHTML = svgStr;
+          const svgEl = pane.querySelector('svg');
+          if (svgEl) { svgEl.style.maxWidth = '180px'; svgEl.style.maxHeight = '180px'; }
+
+          // Show and activate Custom option
+          const customOpt = document.getElementById('customPresetOption');
+          customOpt.style.display = 'block';
+          showPreset('custom');
+
+          // Optionally collapse the settings panel after generation
+          // document.getElementById('resultsSettingsPanel').classList.remove('open');
+          // document.getElementById('resultsSettingsToggle').classList.remove('open');
+
+        } catch (err) {
+          console.error("Custom trace error:", err);
+          showToast('Error generating custom SVG: ' + err.message);
+        } finally {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      }, 50);
     };
 
     // ─── Main process ───
@@ -1439,6 +1738,9 @@
       document.querySelector('.settings-toggle-wrapper').style.display = 'none';
       document.getElementById('settingsPanel').style.display = 'none';
       document.querySelector('.features').style.display = 'none';
+      document.getElementById('customPresetOption').style.display = 'none';
+      document.getElementById('resultsSettingsPanel').classList.remove('open');
+      document.getElementById('resultsSettingsToggle').classList.remove('open');
       processing.classList.add('active');
       results.classList.remove('active');
 
@@ -1446,17 +1748,20 @@
       document.getElementById('pngSize').textContent = pngKB + ' KB';
 
       const reader = new FileReader();
-      reader.onload = async function(ev) {
+      reader.onload = async function (ev) {
         const dataURL = ev.target.result;
         document.getElementById('pngPreview').src = dataURL;
 
         const img = new Image();
-        img.onload = async function() {
+        img.onload = async function () {
           const canvas = document.createElement('canvas');
           canvas.width = img.width; canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
           const imageData = ctx.getImageData(0, 0, img.width, img.height);
+
+          currentOriginalImg = img;
+          currentOriginalImageData = imageData;
 
           try {
             // Render all three presets
@@ -1471,13 +1776,13 @@
               if (svgEl) { svgEl.style.maxWidth = '180px'; svgEl.style.maxHeight = '180px'; }
             }
 
-            // Default to Lite tab
-            activePreset = 'lite';
-            showPreset('lite');
+            // Default to Balanced tab
+            activePreset = 'balanced';
+            showPreset('balanced');
 
             processing.classList.remove('active');
             results.classList.add('active');
-          } catch(err) {
+          } catch (err) {
             console.error('Trace error:', err);
             processing.classList.remove('active');
             dropZoneWrapper.style.display = '';
@@ -1519,31 +1824,39 @@
 </html>`;
     }
 
-    function escapeHTML(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function escapeHTML(str) { return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
     // Expose functions globally so inline onclick handlers work
-    window.switchTab = function(tab, btn) {
+    window.switchTab = function (tab, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('tab-' + tab).classList.add('active');
     };
 
-    window.copyCode = function(type) {
+    window.copyCode = function (type) {
       const code = type === 'svg' ? currentSVGs[activePreset] : currentHTMLString;
       navigator.clipboard.writeText(code).then(() => {
         document.querySelectorAll('.copy-btn').forEach(b => {
           if (b.textContent.toLowerCase().includes(type)) {
-            b.textContent = 'Copied!'; b.classList.add('copied');
-            setTimeout(() => { b.textContent = 'Copy ' + type.toUpperCase(); b.classList.remove('copied'); }, 2000);
+            const originalHTML = b.innerHTML;
+            b.textContent = 'Copied!'; 
+            b.classList.add('copied');
+            setTimeout(() => { 
+              b.innerHTML = originalHTML; 
+              b.classList.remove('copied'); 
+            }, 2000);
           }
         });
         showToast(`${type.toUpperCase()} code copied to clipboard!`);
+      }).catch(err => {
+        console.error('Copy failed:', err);
+        showToast('Failed to copy to clipboard.');
       });
     };
 
-    window.downloadHTML = function() { download(currentHTMLString, currentFileName + '.html', 'text/html'); };
-    window.downloadSVG = function() { download(currentSVGs[activePreset], currentFileName + '-' + activePreset + '.svg', 'image/svg+xml'); };
+    window.downloadHTML = function () { download(currentHTMLString, currentFileName + '.html', 'text/html'); };
+    window.downloadSVG = function () { download(currentSVGs[activePreset], currentFileName + '-' + activePreset + '.svg', 'image/svg+xml'); };
     function download(content, filename, mimeType) {
       const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
@@ -1554,22 +1867,35 @@
       showToast(`Downloaded ${filename}`);
     }
 
-    window.setSvgBg = function(el, color) {
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('downloadMenu');
+      if (menu && menu.classList.contains('show') && !e.target.closest('#downloadDropdownWrapper')) {
+        menu.classList.remove('show');
+      }
+    });
+
+    window.setSvgBg = function (el, color) {
       document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
       el.classList.add('active');
       document.querySelectorAll('.svg-preview-pane').forEach(p => p.style.background = color);
     };
 
-    window.resetAll = function() {
+    window.resetAll = function () {
       results.classList.remove('active');
       dropZoneWrapper.style.display = '';
       document.querySelector('.settings-toggle-wrapper').style.display = '';
       document.getElementById('settingsPanel').style.display = '';
       document.querySelector('.features').style.display = '';
+      document.getElementById('customPresetOption').style.display = 'none';
+      document.getElementById('resultsSettingsPanel').classList.remove('open');
+      document.getElementById('resultsSettingsToggle').classList.remove('open');
       fileInput.value = '';
-      currentSVGs = { lite: '', balanced: '', highres: '' };
-      activePreset = 'lite';
+      currentSVGs = { lite: '', balanced: '', highres: '', custom: '' };
+      activePreset = 'balanced';
       currentHTMLString = '';
+      currentOriginalImg = null;
+      currentOriginalImageData = null;
     };
 
     function showToast(msg) {
@@ -1580,4 +1906,5 @@
     }
   </script>
 </body>
+
 </html>
