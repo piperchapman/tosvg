@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LucidSVG — Clearer Thumbnails</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230ea5e9'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)' /%3E%3Cpath d='M30 70 L50 30 L70 70 Z' fill='none' stroke='%23fff' stroke-width='8' stroke-linejoin='round' /%3E%3Ccircle cx='50' cy='30' r='6' fill='%23fff' /%3E%3Ccircle cx='30' cy='70' r='6' fill='%23fff' /%3E%3Ccircle cx='70' cy='70' r='6' fill='%23fff' /%3E%3C/svg%3E">
   <meta name="description"
     content="Convert your images to ultra-light, crisp SVG thumbnails instantly. Client-side processing, no uploads needed.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
@@ -112,6 +114,9 @@
     }
 
     .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 20px;
       font-weight: 700;
       color: var(--accent-teal);
@@ -1015,7 +1020,22 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <a href="#" class="navbar-brand">LucidSVG</a>
+    <a href="#" class="navbar-brand">
+      <svg width="24" height="24" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="navBrandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0ea5e9" />
+            <stop offset="100%" stop-color="#14b8a6" />
+          </linearGradient>
+        </defs>
+        <rect width="100" height="100" rx="24" fill="url(#navBrandGrad)" />
+        <path d="M30 70 L50 30 L70 70 Z" fill="none" stroke="#fff" stroke-width="8" stroke-linejoin="round" />
+        <circle cx="50" cy="30" r="6" fill="#fff" />
+        <circle cx="30" cy="70" r="6" fill="#fff" />
+        <circle cx="70" cy="70" r="6" fill="#fff" />
+      </svg>
+      LucidSVG
+    </a>
     <div class="navbar-links">
       <a href="#" class="active">Image to SVG</a>
       <a href="#converter" id="navConverter">SVG Viewer</a>
@@ -1043,7 +1063,7 @@
   <!-- Hero -->
   <section class="hero">
     <h1>Clearer <span>Thumbnails.</span></h1>
-    <p>Convert your images to ultra-light, crisp SVG thumbnails instantly.</p>
+    <p>Convert your images to light, crisp SVG thumbnails instantly.</p>
   </section>
 
   <div class="container">
@@ -1188,7 +1208,8 @@
             <div class="preview-body svg-preview-pane" id="svgPreview-highres"></div>
             <div class="preview-body svg-preview-pane" id="svgPreview-custom"></div>
             <div class="floating-controls-panel">
-              <select class="minimal-dropdown" id="presetDropdown" onchange="switchPreset(this.value, this)" style="box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+              <select class="minimal-dropdown" id="presetDropdown" onchange="switchPreset(this.value, this)"
+                style="box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
                 <option value="lite">Lite</option>
                 <option value="balanced" selected>Balanced</option>
                 <option value="highres">High-Res</option>
@@ -1196,38 +1217,59 @@
               </select>
               <div class="color-controls">
                 <label>Background:</label>
-                <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')" title="Dark"></div>
-                <div class="bg-option active" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')" title="Light"></div>
-                <div class="bg-option" style="background:#f3f4f6" onclick="setSvgBg(this, '#f3f4f6')" title="Gray"></div>
-                <div class="bg-option" style="background:#000000" onclick="setSvgBg(this, '#000000')" title="Black"></div>
+                <div class="bg-option" style="background:#1a1a2e" onclick="setSvgBg(this, '#1a1a2e')" title="Dark">
+                </div>
+                <div class="bg-option active" style="background:#ffffff" onclick="setSvgBg(this, '#ffffff')"
+                  title="Light"></div>
+                <div class="bg-option" style="background:#f3f4f6" onclick="setSvgBg(this, '#f3f4f6')" title="Gray">
+                </div>
+                <div class="bg-option" style="background:#000000" onclick="setSvgBg(this, '#000000')" title="Black">
+                </div>
               </div>
             </div>
           </div>
           <div
             style="padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--bg-card);">
             <button class="btn btn-secondary copy-btn" onclick="copyCode('svg')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
               Copy SVG
             </button>
             <div style="position: relative;" id="downloadDropdownWrapper">
-              <button class="btn btn-primary" onclick="document.getElementById('downloadMenu').classList.toggle('show')">
+              <button class="btn btn-primary"
+                onclick="document.getElementById('downloadMenu').classList.toggle('show')">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="7 10 12 15 17 10" />
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Download
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  style="margin-left: 2px;">
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
               <div id="downloadMenu" class="custom-dropdown-menu">
-                <button class="custom-dropdown-item" onclick="downloadSVG(); this.parentElement.classList.remove('show');">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <button class="custom-dropdown-item"
+                  onclick="downloadSVG(); this.parentElement.classList.remove('show');">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
                   SVG Source
                 </button>
-                <button class="custom-dropdown-item" onclick="downloadHTML(); this.parentElement.classList.remove('show');">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <button class="custom-dropdown-item"
+                  onclick="downloadHTML(); this.parentElement.classList.remove('show');">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
                   HTML Embed
                 </button>
               </div>
@@ -1393,18 +1435,35 @@
   </section>
 
   <!-- SEO Content Section -->
-  <section class="seo-content" style="max-width: 800px; margin: 64px auto; padding: 0 20px; color: var(--text-secondary); line-height: 1.7; font-size: 15px;">
-    <h2 style="color: var(--text-primary); font-size: 24px; margin-bottom: 20px; font-weight: 700;">Why Use a PNG to SVG Converter?</h2>
+  <section class="seo-content"
+    style="max-width: 800px; margin: 64px auto; padding: 0 20px; color: var(--text-secondary); line-height: 1.7; font-size: 15px;">
+    <h2 style="color: var(--text-primary); font-size: 24px; margin-bottom: 20px; font-weight: 700;">Why Use a PNG to SVG
+      Converter?</h2>
     <p style="margin-bottom: 20px;">
-      Using a professional <strong>PNG to SVG Converter</strong> is the best way to transform standard raster images into infinitely scalable vector graphics. While traditional image formats like PNG and JPEG rely on a fixed grid of pixels, an SVG (Scalable Vector Graphics) file is built using math and geometry. This fundamental difference means your converted SVG images will completely retain their crisp, sharp edges whether they are scaled down for a mobile watch interface or scaled up for a massive retina desktop display.
+      Using a professional <strong>PNG to SVG Converter</strong> is the best way to transform standard raster images
+      into infinitely scalable vector graphics. While traditional image formats like PNG and JPEG rely on a fixed grid
+      of pixels, an SVG (Scalable Vector Graphics) file is built using math and geometry. This fundamental difference
+      means your converted SVG images will completely retain their crisp, sharp edges whether they are scaled down for a
+      mobile watch interface or scaled up for a massive retina desktop display.
     </p>
-    <h2 style="color: var(--text-primary); font-size: 20px; margin-top: 32px; margin-bottom: 16px; font-weight: 600;">The Benefits of Vectorizing Your Images</h2>
+    <h2 style="color: var(--text-primary); font-size: 20px; margin-top: 32px; margin-bottom: 16px; font-weight: 600;">
+      The Benefits of Vectorizing Your Images</h2>
     <p style="margin-bottom: 20px;">
-       Raster files often suffer from severe pixelation and artifacting when enlarged, making them unreliable for responsive web design. By running your photography, hand-drawn artwork, company logos, or UI icons through our advanced converter, you eliminate resolution dependency entirely. Vectorizing your graphics not only secures flawless visual fidelity but also dramatically reduces the total file payload for flat designs. Lighter files lead directly to faster page load speeds, reducing bounce rates and ultimately boosting your SEO performance across major search engines.
+      Raster files often suffer from severe pixelation and artifacting when enlarged, making them unreliable for
+      responsive web design. By running your photography, hand-drawn artwork, company logos, or UI icons through our
+      advanced converter, you eliminate resolution dependency entirely. Vectorizing your graphics not only secures
+      flawless visual fidelity but also dramatically reduces the total file payload for flat designs. Lighter files lead
+      directly to faster page load speeds, reducing bounce rates and ultimately boosting your SEO performance across
+      major search engines.
     </p>
-    <h2 style="color: var(--text-primary); font-size: 20px; margin-top: 32px; margin-bottom: 16px; font-weight: 600;">Where to Use Your New Vector Graphics</h2>
+    <h2 style="color: var(--text-primary); font-size: 20px; margin-top: 32px; margin-bottom: 16px; font-weight: 600;">
+      Where to Use Your New Vector Graphics</h2>
     <p style="margin-bottom: 20px;">
-      Vector-based SVG files are incredibly versatile because they adapt flawlessly to any container size without stretching. Use them for your company logos, scalable typography, iconography, and expansive background patterns without worrying about blurriness. When you leverage a PNG to SVG converter for web development, your SVG code can be animated vividly using CSS and manipulated with scripts, allowing for interactive web experiences that standard raster images cannot provide. They are perfectly optimized for high-end digital design and workflows.
+      Vector-based SVG files are incredibly versatile because they adapt flawlessly to any container size without
+      stretching. Use them for your company logos, scalable typography, iconography, and expansive background patterns
+      without worrying about blurriness. When you leverage a PNG to SVG converter for web development, your SVG code can
+      be animated vividly using CSS and manipulated with scripts, allowing for interactive web experiences that standard
+      raster images cannot provide. They are perfectly optimized for high-end digital design and workflows.
     </p>
   </section>
 
@@ -1856,11 +1915,11 @@
         document.querySelectorAll('.copy-btn').forEach(b => {
           if (b.textContent.toLowerCase().includes(type)) {
             const originalHTML = b.innerHTML;
-            b.textContent = 'Copied!'; 
+            b.textContent = 'Copied!';
             b.classList.add('copied');
-            setTimeout(() => { 
-              b.innerHTML = originalHTML; 
-              b.classList.remove('copied'); 
+            setTimeout(() => {
+              b.innerHTML = originalHTML;
+              b.classList.remove('copied');
             }, 2000);
           }
         });
@@ -1884,7 +1943,7 @@
     }
 
     // Close dropdowns when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       const menu = document.getElementById('downloadMenu');
       if (menu && menu.classList.contains('show') && !e.target.closest('#downloadDropdownWrapper')) {
         menu.classList.remove('show');
