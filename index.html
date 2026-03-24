@@ -1042,6 +1042,95 @@
       font-size: 12px;
       color: var(--text-muted);
     }
+
+    /* ─── SVG Viewer ─── */
+    .svg-viewer-container {
+      display: flex;
+      gap: 24px;
+      height: 600px;
+      margin-top: 20px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    @media (max-width: 800px) {
+      .svg-viewer-container {
+        flex-direction: column;
+        height: auto;
+      }
+    }
+
+    .svg-input-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    @media (max-width: 800px) {
+      .svg-input-wrapper {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    .svg-input-header, .svg-render-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-primary);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .svg-input-area {
+      flex: 1;
+      padding: 20px;
+      border: none;
+      background: #fafbfc;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: none;
+      outline: none;
+      min-height: 300px;
+    }
+
+    /* Dark mode override for the textarea */
+    html[data-theme="dark"] .svg-input-area, html[data-theme="dark"] .code-output {
+      background: #0f1115;
+    }
+
+    .svg-render-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .svg-render-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: repeating-conic-gradient(#f3f4f6 0% 25%, transparent 0% 50%) 0 0 / 20px 20px;
+      overflow: auto;
+      min-height: 300px;
+    }
+
+    .svg-render-area svg {
+      max-width: 100%;
+      max-height: 100%;
+    }
   </style>
 </head>
 
@@ -1066,8 +1155,8 @@
       LucidSVG
     </a>
     <div class="navbar-links">
-      <a href="#" class="active">Image to SVG</a>
-      <a href="#converter" id="navConverter">SVG Viewer</a>
+      <a href="#" class="active" id="navHome">Image to SVG</a>
+      <a href="#" id="navConverter">SVG Viewer</a>
     </div>
     <button class="navbar-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
       <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -1089,6 +1178,7 @@
     </button>
   </nav>
 
+  <div id="homeView">
   <!-- Hero -->
   <section class="hero">
     <h1>Clearer <span>Thumbnails.</span></h1>
@@ -1496,6 +1586,34 @@
     </p>
   </section>
 
+  </div> <!-- closing homeView -->
+
+  <!-- SVG Viewer View -->
+  <div id="svgViewerView" style="display: none; max-width: 1200px; margin: 40px auto; padding: 0 20px; height: calc(100vh - 120px); align-items: stretch; flex-direction: column;">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <h2 style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">SVG Viewer</h2>
+      <p style="color: var(--text-secondary);">Paste your SVG code on the left to see an instant preview on the right.</p>
+    </div>
+    
+    <div class="svg-viewer-container" style="flex: 1; display: flex;">
+      <div class="svg-input-wrapper" style="flex: 1;">
+        <div class="svg-input-header">
+          <span>SVG Code</span>
+          <button class="btn btn-secondary" onclick="document.getElementById('svgInput').value = ''; document.getElementById('svgRenderOutput').innerHTML = '';" style="padding: 4px 10px; font-size: 11px;">Clear</button>
+        </div>
+        <textarea id="svgInput" class="svg-input-area" placeholder="<svg>...</svg>"></textarea>
+      </div>
+      <div class="svg-render-wrapper" style="flex: 1;">
+        <div class="svg-render-header">
+          <span>Live Preview</span>
+        </div>
+        <div class="svg-render-area" id="svgRenderOutput">
+          <!-- Rendered SVG will appear here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast" id="toast">
     <span class="toast-icon">✓</span>
@@ -1618,11 +1736,54 @@
     dropZone.addEventListener('click', (e) => { if (e.target.tagName !== 'BUTTON') fileInput.click(); });
     fileInput.addEventListener('change', (e) => { if (e.target.files[0]) processFile(e.target.files[0]); });
 
-    // Converter nav link scrolls to drop zone
-    document.getElementById('navConverter').addEventListener('click', (e) => {
+    // ─── Navigation & Views ───
+    const navHome = document.getElementById('navHome');
+    const navConverter = document.getElementById('navConverter');
+    const homeView = document.getElementById('homeView');
+    const svgViewerView = document.getElementById('svgViewerView');
+
+    navHome.addEventListener('click', (e) => {
       e.preventDefault();
-      dropZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      navHome.classList.add('active');
+      navConverter.classList.remove('active');
+      homeView.style.display = 'block';
+      svgViewerView.style.display = 'none';
     });
+
+    navConverter.addEventListener('click', (e) => {
+      e.preventDefault();
+      navConverter.classList.add('active');
+      navHome.classList.remove('active');
+      homeView.style.display = 'none';
+      svgViewerView.style.display = 'flex';
+      
+      renderSvgViewer();
+    });
+
+    // ─── SVG Viewer Logic ───
+    const svgInput = document.getElementById('svgInput');
+    const svgRenderOutput = document.getElementById('svgRenderOutput');
+
+    function renderSvgViewer() {
+      const code = svgInput.value.trim();
+      if (!code) {
+        svgRenderOutput.innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Preview will appear here</p>';
+        return;
+      }
+      
+      svgRenderOutput.innerHTML = code;
+      
+      const svgEl = svgRenderOutput.querySelector('svg');
+      if (svgEl) {
+        svgEl.style.maxWidth = '100%';
+        svgEl.style.maxHeight = '100%';
+      }
+    }
+
+    svgInput.addEventListener('input', renderSvgViewer);
+    
+    // Initial render
+    renderSvgViewer();
 
     // ─── Color quantization (median-cut, no blur) ───
     function quantizeColors(imageData, numColors) {
